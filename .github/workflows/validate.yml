@@ -1,0 +1,45 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate plugin packages
+        run: python3 scripts/validate.py
+      - name: Build plugin zips
+        run: ./scripts/package.sh
+      - name: Verify each zip has a single root and a manifest
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          zips=(dist/*.zip)
+          if [ ${#zips[@]} -eq 0 ]; then
+            echo "::error::no zips built"; exit 1
+          fi
+          for z in "${zips[@]}"; do
+            python3 - "$z" <<'PY'
+          import sys, zipfile
+          z = sys.argv[1]
+          names = [n for n in zipfile.ZipFile(z).namelist() if n and not n.endswith('/')]
+          roots = {n.split('/')[0] for n in names}
+          assert len(roots) == 1, f"{z}: multiple top-level entries {roots}"
+          root = roots.pop()
+          assert f"{root}/plugin.json" in names, f"{z}: no plugin.json at archive root"
+          assert all(n.startswith(root + "/") for n in names), f"{z}: entries outside root dir"
+          print(f"ok {z} -> {root}/")
+          PY
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-packages
+          path: dist/*.zip
+          if-no-files-found: error
