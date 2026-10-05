@@ -1,0 +1,17 @@
+{
+  "name": "jovylle-plugins",
+  "plugins": [
+    {
+      "name": "video-prompt-builder",
+      "source": {
+        "source": "local",
+        "path": "./plugins/video-prompt-builder"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creative"
+    }
+  ]
+}

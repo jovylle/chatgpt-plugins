@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "video-prompt-builder",
+  "version": "0.2.0",
+  "description": "Build clean keyframes and continuity-safe prompts for short AI video clips - single shots, multi-clip sequences, and golden-hour dreamscapes.",
+  "author": { "name": "Jovylle Bermudez" },
+  "keywords": ["video", "prompts", "keyframes", "image-to-video", "continuity", "dreamscape"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Video Prompt Builder",
+        "shortDescription": "Keyframes, motion prompts, continuity-safe sequences",
+        "longDescription": "Generate production-ready prompts for short AI video clips. Build a clean still keyframe as a visual anchor, write motion-only prompts that preserve characters, framing, environment, and lighting, plan multi-clip sequences that cut together without drift, and apply a golden-hour dreamscape aesthetic. Supports Veo, Wan, Seedance, and similar image-to-video workflows.",
+        "developerName": "Jovylle Bermudez",
+        "category": "Creative",
+        "capabilities": ["Instructions"],
+        "defaultPrompt": [
+          "Build a short AI video prompt from my scene or keyframe. Preserve visual continuity and describe motion clearly.",
+          "Create a clean keyframe to use as the visual anchor for my clip.",
+          "Plan a four-clip sequence that cuts together without visual drift.",
+          "Give this scene a golden-hour dreamscape look with warm moon clusters and sky-reaching massifs."
+        ]
+      }
+    }
+  }
+}
